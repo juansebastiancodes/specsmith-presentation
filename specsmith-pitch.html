@@ -35,9 +35,15 @@
     position: absolute; inset: 0;
     display: flex; flex-direction: column;
     justify-content: center; align-items: center;
-    padding: 60px 80px;
+    padding: 60px 40px;
     opacity: 0; pointer-events: none;
     transition: opacity 0.5s ease;
+  }
+  
+  .slide > div:first-child {
+    width: 100%;
+    max-width: 920px;
+    margin: 0 auto;
   }
   .slide.active { opacity: 1; pointer-events: all; }
 
@@ -131,13 +137,11 @@
   #s1 .badge::before { content: '●'; animation: blink 1.4s infinite; }
   @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.2} }
 
-  /* ── CONTENT ALIGNMENT PATTERN (SLIDES 2–6) ── */
-  #s2, #s3, #s4, #s5, #s6 { align-items: center; }
   /* ── SLIDE 2: PROBLEM ── */
-  #s2 { align-items: center; }
+  #s2 { align-items: flex-start; }
   #s2 .stat-row {
     display: grid; grid-template-columns: repeat(3,1fr); gap: 24px;
-    width: 100%; max-width: 1240px; z-index: 1; margin-top: 36px;
+    width: 100%; max-width: 960px; z-index: 1; margin-top: 36px;
   }
   .stat-card {
     background: var(--surface); border: 1px solid var(--border);
@@ -155,13 +159,14 @@
   }
   .stat-card .desc { font-size: 14px; color: var(--muted); line-height: 1.4; }
   #s2 .quote {
-    margin: 32px auto 0; z-index: 1;
+    margin-top: 32px; z-index: 1;
     font-size: 22px; font-weight: 300; font-style: italic;
-    color: rgba(240,240,248,0.55); width: 100%; max-width: 1240px; line-height: 1.5;
+    color: rgba(240,240,248,0.55); max-width: 760px; line-height: 1.5;
     border-left: 3px solid var(--accent2); padding-left: 24px;
   }
 
   /* ── SLIDE 3: SOLUTION ── */
+  #s3 { align-items: flex-start; }
   .solution-grid {
     display: grid; grid-template-columns: 1fr 1fr; gap: 20px;
     width: 100%; max-width: 960px; z-index: 1; margin-top: 32px;
@@ -183,6 +188,7 @@
   .sol-desc { font-size: 13px; color: var(--muted); line-height: 1.5; }
 
   /* ── SLIDE 4: EZFA DEMO ── */
+  #s4 { align-items: flex-start; }
   .demo-layout {
     display: grid; grid-template-columns: 1fr 1.4fr; gap: 32px;
     width: 100%; max-width: 1000px; z-index: 1; margin-top: 28px;
@@ -233,6 +239,7 @@
   .sc-section { color: rgba(240,240,248,0.9); font-weight: 700; }
 
   /* ── SLIDE 5: ARCHITECTURE ── */
+  #s5 { align-items: flex-start; }
   .arch-wrap { width: 100%; max-width: 960px; z-index: 1; margin-top: 24px; }
   .arch-svg-container {
     background: var(--surface); border: 1px solid var(--border);
@@ -240,6 +247,7 @@
   }
 
   /* ── SLIDE 6: LEGAL SHIELD ── */
+  #s6 { align-items: flex-start; }
   .legal-grid {
     display: grid; grid-template-columns: 1fr 1fr; gap: 20px;
     width: 100%; max-width: 960px; z-index: 1; margin-top: 32px;
@@ -364,80 +372,84 @@
   </div>
 
   <!-- ═══ SLIDE 2: PROBLEMA ═══ -->
-  <div class="slide" id="s2">
+  <div class="slide" id="s2" style="justify-content:center;">
     <div class="blob" style="width:500px;height:500px;background:rgba(255,61,107,0.07);top:-80px;right:-80px;"></div>
-    <div style="position:relative;z-index:1;width:100%;max-width:1240px;">
-      <div class="eyebrow">El Problema</div>
-      <h2>Rehenes del<br><span class="glow-red">vendor lock-in</span></h2>
-    </div>
-    <div class="stat-row">
-      <div class="stat-card">
-        <div class="big-num">70%</div>
-        <div class="desc">de las empresas Fortune 500 depende de software con más de 20 años de antigüedad. Atrapado. Sin salida visible. <em style="font-size:11px;">(IBM Institute for Business Value)</em></div>
+    <div style="position:relative;z-index:1;width:100%;max-width:900px;margin:0 auto;display:flex;flex-direction:column;align-items:center;">
+      <div style="text-align:center;">
+        <div class="eyebrow">El Problema</div>
+        <h2 style="text-align:center;">Rehenes del<br><span class="glow-red">vendor lock-in</span></h2>
       </div>
-      <div class="stat-card">
-        <div class="big-num">3–5×</div>
-        <div class="desc">Lo que los vendors cobran de más cuando saben que migrar "es imposible". El switching cost artificial es su mayor activo.</div>
+      <div class="stat-row" style="margin:0 auto;">
+        <div class="stat-card">
+          <div class="big-num">70%</div>
+          <div class="desc">de las empresas Fortune 500 depende de software con más de 20 años de antigüedad. Atrapado. Sin salida visible. <em style="font-size:11px;">(IBM Institute for Business Value)</em></div>
+        </div>
+        <div class="stat-card">
+          <div class="big-num">3–5×</div>
+          <div class="desc">Lo que los vendors cobran de más cuando saben que migrar "es imposible". El switching cost artificial es su mayor activo.</div>
+        </div>
+        <div class="stat-card">
+          <div class="big-num">0</div>
+          <div class="desc">Herramientas que generan especificaciones técnicas legalmente desde un binario. <strong style="color:var(--text)">Hasta hoy.</strong></div>
+        </div>
       </div>
-      <div class="stat-card">
-        <div class="big-num">0</div>
-        <div class="desc">Herramientas que generan especificaciones técnicas legalmente desde un binario. <strong style="color:var(--text)">Hasta hoy.</strong></div>
+      <div class="quote" style="position:relative;z-index:1;text-align:center;">
+        "Migrar costaría $5M y 2 años." — Lo que el vendor <em>quiere</em> que creas.
       </div>
-    </div>
-    <div class="quote" style="position:relative;z-index:1;">
-      "Migrar costaría $5M y 2 años." — Lo que el vendor <em>quiere</em> que creas.
     </div>
   </div>
 
   <!-- ═══ SLIDE 3: SOLUCIÓN ═══ -->
-  <div class="slide" id="s3" style="justify-content:center;">
+  <div class="slide" id="s3" style="justify-content:center;align-items:center;">
     <div class="blob" style="width:700px;height:700px;background:rgba(0,229,255,0.05);top:50%;left:50%;transform:translate(-50%,-50%);"></div>
-    <div style="position:relative;z-index:1;width:100%;max-width:980px;text-align:center;margin-bottom:24px;">
-      <div class="eyebrow" style="text-align:center;">La Solución</div>
-      <h2 style="font-size:clamp(36px,5vw,64px);line-height:1.05;text-align:center;">
-        Subís un binario.<br>
-        <span class="glow-cyan">Salís con todo lo que necesitás</span><br>
-        <span style="color:rgba(240,240,248,0.35);font-size:0.75em;">para no depender de nadie.</span>
-      </h2>
-    </div>
-    <div style="position:relative;z-index:1;display:grid;grid-template-columns:1fr auto 1fr auto 1fr;gap:0;width:100%;max-width:960px;align-items:center;margin:0 auto 20px;">
-      <div style="background:rgba(255,61,107,0.07);border:1px solid rgba(255,61,107,0.25);border-radius:20px;padding:24px 20px;text-align:center;">
-        <div style="font-size:36px;margin-bottom:10px;">📦</div>
-        <div style="font-family:'JetBrains Mono',monospace;font-size:15px;color:var(--accent2);font-weight:700;margin-bottom:6px;">.exe · .dll · .bin</div>
-        <div style="font-size:12px;color:var(--muted);line-height:1.5;">Cualquier binario propietario.<br>Sin código fuente.<br>Sin cooperación del vendor.</div>
+    <div style="position:relative;z-index:1;width:100%;max-width:900px;margin:0 auto;display:flex;flex-direction:column;align-items:center;gap:24px;">
+      <div style="text-align:center;width:100%;">
+        <div class="eyebrow" style="text-align:center;">La Solución</div>
+        <h2 style="font-size:clamp(36px,5vw,64px);line-height:1.05;text-align:center;">
+          Subís un binario.<br>
+          <span class="glow-cyan">Salís con todo lo que necesitás</span><br>
+          <span style="color:rgba(240,240,248,0.35);font-size:0.75em;">para no depender de nadie.</span>
+        </h2>
       </div>
-      <div style="text-align:center;padding:0 18px;">
-        <div style="font-size:32px;color:var(--accent);">→</div>
-        <div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);margin-top:4px;letter-spacing:0.1em;">~2 min</div>
-      </div>
-      <div style="background:rgba(0,229,255,0.06);border:2px solid rgba(0,229,255,0.35);border-radius:20px;padding:24px 20px;text-align:center;position:relative;overflow:hidden;">
-        <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--accent),transparent);"></div>
-        <div style="font-size:36px;margin-bottom:10px;">⚡</div>
-        <div style="font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--accent);letter-spacing:0.1em;margin-bottom:6px;">SpecSmith</div>
-        <div style="font-size:11px;color:var(--muted);line-height:1.5;">IA + Reverse Engineering<br>Clean-room certificado</div>
-      </div>
-      <div style="text-align:center;padding:0 18px;">
-        <div style="font-size:32px;color:var(--accent);">→</div>
-      </div>
-      <div style="background:rgba(255,224,102,0.06);border:1px solid rgba(255,224,102,0.25);border-radius:20px;padding:24px 20px;text-align:center;">
-        <div style="font-size:36px;margin-bottom:10px;">🗺️</div>
-        <div style="font-family:'JetBrains Mono',monospace;font-size:15px;color:var(--accent3);font-weight:700;margin-bottom:6px;">Spec + Tests</div>
-        <div style="font-size:12px;color:var(--muted);line-height:1.5;">Especificación detallada<br>+ test suite listo para<br>reimplementar.</div>
-      </div>
-    </div>
-    <div style="position:relative;z-index:1;display:grid;grid-template-columns:1fr 1fr;gap:16px;width:100%;max-width:960px;margin:0 auto;">
-      <div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 22px;display:flex;gap:14px;align-items:flex-start;">
-        <div style="font-size:24px;flex-shrink:0;">📄</div>
-        <div>
-          <div style="font-size:14px;font-weight:700;margin-bottom:4px;">Especificación técnica detallada</div>
-          <div style="font-size:12px;color:var(--muted);line-height:1.5;">Qué hace el software, cómo lo hace, qué dependencias usa y qué costaría reimplementarlo desde cero.</div>
+      <div style="display:grid;grid-template-columns:1fr auto 1fr auto 1fr;gap:0;width:100%;align-items:center;">
+        <div style="background:rgba(255,61,107,0.07);border:1px solid rgba(255,61,107,0.25);border-radius:20px;padding:24px 20px;text-align:center;">
+          <div style="font-size:36px;margin-bottom:10px;">📦</div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:15px;color:var(--accent2);font-weight:700;margin-bottom:6px;">.exe · .dll · .bin</div>
+          <div style="font-size:12px;color:var(--muted);line-height:1.5;">Cualquier binario propietario.<br>Sin código fuente.<br>Sin cooperación del vendor.</div>
+        </div>
+        <div style="text-align:center;padding:0 18px;">
+          <div style="font-size:32px;color:var(--accent);">→</div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);margin-top:4px;letter-spacing:0.1em;">~2 min</div>
+        </div>
+        <div style="background:rgba(0,229,255,0.06);border:2px solid rgba(0,229,255,0.35);border-radius:20px;padding:24px 20px;text-align:center;position:relative;overflow:hidden;">
+          <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--accent),transparent);"></div>
+          <div style="font-size:36px;margin-bottom:10px;">⚡</div>
+          <div style="font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--accent);letter-spacing:0.1em;margin-bottom:6px;">SpecSmith</div>
+          <div style="font-size:11px;color:var(--muted);line-height:1.5;">IA + Reverse Engineering<br>Clean-room certificado</div>
+        </div>
+        <div style="text-align:center;padding:0 18px;">
+          <div style="font-size:32px;color:var(--accent);">→</div>
+        </div>
+        <div style="background:rgba(255,224,102,0.06);border:1px solid rgba(255,224,102,0.25);border-radius:20px;padding:24px 20px;text-align:center;">
+          <div style="font-size:36px;margin-bottom:10px;">🗺️</div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:15px;color:var(--accent3);font-weight:700;margin-bottom:6px;">Spec + Tests</div>
+          <div style="font-size:12px;color:var(--muted);line-height:1.5;">Especificación detallada<br>+ test suite listo para<br>reimplementar.</div>
         </div>
       </div>
-      <div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 22px;display:flex;gap:14px;align-items:flex-start;">
-        <div style="font-size:24px;flex-shrink:0;">🧪</div>
-        <div>
-          <div style="font-size:14px;font-weight:700;margin-bottom:4px;">Test suite listo para implementar</div>
-          <div style="font-size:12px;color:var(--muted);line-height:1.5;">Batería de tests que valida que cualquier reimplementación es funcionalmente idéntica al original.</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;width:100%;">
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 22px;display:flex;gap:14px;align-items:flex-start;">
+          <div style="font-size:24px;flex-shrink:0;">📄</div>
+          <div>
+            <div style="font-size:14px;font-weight:700;margin-bottom:4px;">Especificación técnica detallada</div>
+            <div style="font-size:12px;color:var(--muted);line-height:1.5;">Qué hace el software, cómo lo hace, qué dependencias usa y qué costaría reimplementarlo desde cero.</div>
+          </div>
+        </div>
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 22px;display:flex;gap:14px;align-items:flex-start;">
+          <div style="font-size:24px;flex-shrink:0;">🧪</div>
+          <div>
+            <div style="font-size:14px;font-weight:700;margin-bottom:4px;">Test suite listo para implementar</div>
+            <div style="font-size:12px;color:var(--muted);line-height:1.5;">Batería de tests que valida que cualquier reimplementación es funcionalmente idéntica al original.</div>
+          </div>
         </div>
       </div>
     </div>
@@ -446,7 +458,7 @@
   <!-- ═══ SLIDE 4: POR QUÉ AHORA ═══ -->
   <div class="slide" id="s4">
     <div class="blob" style="width:600px;height:600px;background:rgba(0,229,255,0.06);top:50%;left:50%;transform:translate(-50%,-50%);"></div>
-    <div style="position:relative;z-index:1;width:min(1240px,100%);margin:0 auto;display:flex;flex-direction:column;gap:32px;">
+    <div style="position:relative;z-index:1;width:100%;max-width:860px;display:flex;flex-direction:column;gap:32px;">
       <div>
         <div class="eyebrow">Por qué ahora</div>
         <h2>Esto siempre fue posible.<br><span class="glow-cyan">La IA lo hace accesible.</span></h2>
@@ -724,14 +736,18 @@
   <!-- ═══ SLIDE 10: CTA ═══ -->
   <div class="slide" id="s10">
     <div class="blob" style="width:700px;height:700px;background:rgba(0,229,255,0.06);top:50%;left:50%;transform:translate(-50%,-50%);"></div>
-    <div class="eyebrow" style="position:relative;z-index:1;">SpecSmith</div>
-    <div class="big-tagline" style="position:relative;z-index:1;">
-      Negocia desde la<br><span class="glow-cyan">verdad técnica.</span><br>No desde el miedo.
+    <div style="position:relative;z-index:1;width:100%;max-width:920px;margin:0 auto;text-align:center;display:flex;flex-direction:column;align-items:center;gap:24px;">
+      <div class="eyebrow" style="position:relative;z-index:1;">SpecSmith</div>
+      <div class="big-tagline" style="position:relative;z-index:1;">
+        Negocia desde la<br><span class="glow-cyan">verdad técnica.</span><br>No desde el miedo.
+      </div>
+      <p class="cta-sub" style="position:relative;z-index:1;">
+        Subí un binario. En minutos sabés exactamente qué hace,<br>qué cuesta reimplementarlo, y cómo salir del lock-in.
+      </p>
+      <a href="https://current-thru-dee-eat.trycloudflare.com" target="_blank" style="position:relative;z-index:1;display:inline-block;background:var(--accent);color:var(--bg);padding:14px 36px;border-radius:100px;font-weight:700;text-decoration:none;font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:0.1em;transition:all 0.3s;cursor:pointer;margin-top:8px;hover:brightness(1.1);">
+        Ver Live Demo →
+      </a>
     </div>
-    <p class="cta-sub" style="position:relative;z-index:1;">
-      Subí un binario. En minutos sabés exactamente qué hace,<br>qué cuesta reimplementarlo, y cómo salir del lock-in.
-    </p>
-    <div class="cta-pills" style="position:relative;z-index:1;"></div>
   </div>
 
 </div><!-- .deck -->
