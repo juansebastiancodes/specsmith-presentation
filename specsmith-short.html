@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SpecSmith — 2 Slides</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,700;1,300&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #09090f;
+    --surface: #111118;
+    --surface2: #1a1a26;
+    --accent: #00e5ff;
+    --accent2: #ff3d6b;
+    --accent3: #ffe066;
+    --text: #f0f0f8;
+    --muted: #6b6b88;
+    --border: rgba(255,255,255,0.07);
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html, body { width:100%; height:100%; background:var(--bg); color:var(--text); font-family:'DM Sans',sans-serif; overflow:hidden; }
+
+  .deck { width:100%; height:100%; position:relative; }
+  .slide {
+    position:absolute; inset:0;
+    display:flex; flex-direction:column;
+    justify-content:center; align-items:center;
+    padding:80px 80px 80px;
+    opacity:0; pointer-events:none;
+    transition:opacity 0.45s ease;
+  }
+  .slide.active { opacity:1; pointer-events:all; }
+
+  .logo { position:fixed; top:28px; left:40px; font-family:'Bebas Neue',sans-serif; font-size:22px; letter-spacing:0.15em; color:var(--accent); z-index:100; }
+  .snum { position:fixed; top:30px; right:40px; font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--muted); letter-spacing:0.1em; z-index:100; }
+
+  .nav { position:fixed; bottom:32px; left:50%; transform:translateX(-50%); display:flex; align-items:center; gap:20px; z-index:100; }
+  .nav button { background:var(--surface2); border:1px solid var(--border); color:var(--text); font-family:'DM Sans',sans-serif; font-size:13px; padding:10px 28px; border-radius:100px; cursor:pointer; transition:all 0.2s; }
+  .nav button:hover { background:var(--accent); color:var(--bg); border-color:var(--accent); }
+  .dots { display:flex; gap:8px; align-items:center; }
+  .dot { width:6px; height:6px; border-radius:50%; background:var(--muted); transition:all 0.3s; cursor:pointer; }
+  .dot.active { background:var(--accent); width:20px; border-radius:3px; }
+
+  .blob { position:absolute; border-radius:50%; filter:blur(120px); pointer-events:none; z-index:0; }
+  .eyebrow { font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:0.2em; text-transform:uppercase; color:var(--accent); margin-bottom:16px; padding-top:32px; }
+  h2 { font-family:'Bebas Neue',sans-serif; font-size:clamp(44px,6vw,76px); letter-spacing:0.04em; line-height:1; }
+  .glow-red  { color:var(--accent2); text-shadow:0 0 40px rgba(255,61,107,0.5); }
+  .glow-cyan { color:var(--accent);  text-shadow:0 0 40px rgba(0,229,255,0.5); }
+
+  /* ── SLIDE 1 ── */
+  #s1 { align-items:flex-start; }
+  .s1-body { display:grid; grid-template-columns:1fr 1fr; gap:28px; width:100%; max-width:980px; z-index:1; margin-top:28px; align-items:start; }
+  .stats-col { display:flex; flex-direction:column; gap:16px; }
+  .stat-card { background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:26px 24px; position:relative; overflow:hidden; }
+  .stat-card::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; background:linear-gradient(90deg,var(--accent2),transparent); }
+  .big-num { font-family:'Bebas Neue',sans-serif; font-size:52px; color:var(--accent2); line-height:1; }
+  .stat-desc { font-size:13px; color:var(--muted); line-height:1.5; margin-top:6px; }
+  .quote-col { display:flex; flex-direction:column; gap:16px; justify-content:center; }
+  .big-quote { font-size:22px; font-weight:300; font-style:italic; color:rgba(240,240,248,0.55); line-height:1.5; border-left:3px solid var(--accent2); padding-left:22px; }
+  .problem-detail { background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:24px; }
+  .problem-detail p { font-size:14px; color:var(--muted); line-height:1.7; }
+  .problem-detail p strong { color:var(--text); }
+
+  /* ── SLIDE 2 ── */
+  #s2 { align-items:flex-start; }
+  .s2-body { display:grid; grid-template-columns:1.1fr 0.9fr; gap:28px; width:100%; max-width:980px; z-index:1; margin-top:28px; align-items:start; }
+  .flow-box { background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:28px 30px; }
+  .flow-title { font-size:13px; font-weight:600; color:var(--muted); letter-spacing:0.05em; margin-bottom:20px; text-transform:uppercase; font-family:'JetBrains Mono',monospace; }
+  .flow-row { display:flex; align-items:center; gap:14px; margin-bottom:14px; }
+  .flow-tag { background:rgba(0,229,255,0.08); border:1px solid rgba(0,229,255,0.2); border-radius:8px; padding:8px 14px; font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--accent); white-space:nowrap; }
+  .flow-arrow { color:var(--muted); font-size:18px; flex-shrink:0; }
+  .flow-result { font-size:13px; color:var(--muted); line-height:1.4; }
+  .flow-result strong { color:var(--text); }
+  .divider { height:1px; background:var(--border); margin:18px 0; }
+  .iter-row { display:flex; gap:10px; align-items:flex-start; margin-bottom:10px; }
+  .iter-badge { font-family:'JetBrains Mono',monospace; font-size:10px; padding:3px 10px; border-radius:20px; flex-shrink:0; margin-top:1px; }
+  .iter-v1 { background:rgba(0,229,255,0.1); color:var(--accent); border:1px solid rgba(0,229,255,0.2); }
+  .iter-v2 { background:rgba(255,224,102,0.08); color:var(--accent3); border:1px solid rgba(255,224,102,0.2); }
+  .iter-text { font-size:13px; color:var(--muted); line-height:1.5; }
+  .iter-text strong { color:var(--text); }
+
+  .legal-col { display:flex; flex-direction:column; gap:14px; }
+  .legal-card { background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:20px 22px; position:relative; overflow:hidden; }
+  .legal-card::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; background:linear-gradient(90deg,var(--accent),transparent); }
+  .legal-card.lawyers { border-color:rgba(255,224,102,0.25); }
+  .legal-card.lawyers::before { background:linear-gradient(90deg,var(--accent3),transparent); }
+  .lc-label { font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:0.12em; color:var(--accent); margin-bottom:8px; text-transform:uppercase; }
+  .lc-label.yell { color:var(--accent3); }
+  .lc-title { font-size:15px; font-weight:700; margin-bottom:6px; }
+  .lc-desc { font-size:12.5px; color:var(--muted); line-height:1.55; }
+  .lc-list { list-style:none; display:flex; flex-direction:column; gap:5px; margin-top:8px; }
+  .lc-list li { font-size:12px; color:var(--muted); display:flex; gap:8px; }
+  .lc-list li::before { content:'✓'; color:var(--accent); flex-shrink:0; }
+</style>
+</head>
+<body>
+
+<div class="logo">SpecSmith</div>
+<div class="snum" id="snum">01 / 02</div>
+
+<div class="deck">
+
+  <!-- ══════════════════════════════════
+       SLIDE 1 — EL PROBLEMA
+  ══════════════════════════════════ -->
+  <div class="slide active" id="s1">
+    <div class="blob" style="width:500px;height:500px;background:rgba(255,61,107,0.07);top:-80px;right:-80px;"></div>
+    <div style="position:relative;z-index:1;width:100%;max-width:980px;">
+      <div class="eyebrow">El Problema</div>
+      <h2>Rehenes del<br><span class="glow-red">vendor lock-in</span></h2>
+    </div>
+    <div class="s1-body">
+      <div class="stats-col">
+        <div class="stat-card">
+          <div class="big-num">70%</div>
+          <div class="stat-desc">de las empresas Fortune 500 depende de software con más de 20 años de antigüedad — atrapado, sin salida visible. <em>(IBM Institute for Business Value)</em></div>
+        </div>
+        <div class="stat-card">
+          <div class="big-num">3–5×</div>
+          <div class="stat-desc">Lo que los vendors cobran de más cuando saben que migrar "es imposible". El switching cost es su mayor activo.</div>
+        </div>
+        <div class="stat-card">
+          <div class="big-num">0</div>
+          <div class="stat-desc">Herramientas que generan especificaciones técnicas legalmente desde un binario. <strong style="color:var(--text)">Hasta hoy.</strong></div>
+        </div>
+      </div>
+      <div class="quote-col">
+        <div class="big-quote">
+          "Migrar costaría $5M y 2 años."<br>
+          <span style="font-size:16px;color:rgba(240,240,248,0.35);">— Lo que el vendor quiere que creas.</span>
+        </div>
+        <div class="problem-detail">
+          <p>Las empresas quedan atrapadas no porque el software sea <strong>insustituible</strong>, sino porque nadie entiende qué hace realmente. El código fuente es del vendor. El conocimiento es del vendor. El precio lo pone el vendor.</p>
+          <br>
+          <p>Mientras no exista una especificación técnica independiente, la empresa negocia <strong>a ciegas</strong>.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════
+       SLIDE 2 — LA SOLUCIÓN
+  ══════════════════════════════════ -->
+  <div class="slide" id="s2">
+    <div class="blob" style="width:500px;height:500px;background:rgba(0,229,255,0.06);bottom:-100px;left:-100px;"></div>
+    <div style="position:relative;z-index:1;width:100%;max-width:980px;">
+      <div class="eyebrow">La Solución</div>
+      <h2>De caja negra<br><span class="glow-cyan">a especificación completa</span></h2>
+    </div>
+    <div class="s2-body">
+
+      <div style="display:flex;flex-direction:column;gap:14px;">
+        <div class="flow-box">
+          <div class="flow-title">Cómo funciona</div>
+          <div class="flow-row">
+            <div class="flow-tag">.exe / .bin / .dll</div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-result"><strong>SpecSmith</strong><br>Claude + Ghidra · ~2 min</div>
+          </div>
+          <div class="flow-row">
+            <div class="flow-tag">spec.md + spec.json</div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-result"><strong>Especificación completa</strong><br>funciones, APIs, incompatibilidades</div>
+          </div>
+          <div class="flow-row" style="margin-bottom:0;">
+            <div class="flow-tag">evidence.zip</div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-result"><strong>Evidencia técnica</strong><br>para auditoría o litigio</div>
+          </div>
+          <div class="divider"></div>
+          <div class="iter-row">
+            <div class="iter-badge iter-v1">v1 · hoy</div>
+            <div class="iter-text"><strong>Especificación detallada</strong> — qué hace el software, cómo lo hace, qué APIs usa, qué cuesta reimplementar</div>
+          </div>
+          <div class="iter-row" style="margin-bottom:0;">
+            <div class="iter-badge iter-v2">v2 · próx.</div>
+            <div class="iter-text"><strong>Test suite automático</strong> — valida que cualquier reimplementación es funcionalmente idéntica</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="legal-col">
+        <div class="legal-card">
+          <div class="lc-label">Es legal — probado en corte</div>
+          <div class="lc-title">Clean-room method</div>
+          <ul class="lc-list">
+            <li>EU Directiva 2009/24/EC — RE para interoperabilidad es explícitamente legal</li>
+            <li>Sega v. Accolade (1992) — fair use confirmado</li>
+            <li>Sony v. Connectix (2000) — BIOS propietaria, fallo a favor</li>
+            <li>SAS v. WPL, TJUE (2012) — APIs y funcionalidad no son obra protegida</li>
+            <li>Nosotros generamos specs, no reimplementaciones</li>
+          </ul>
+        </div>
+        <div class="legal-card">
+          <div class="lc-label">Por qué Europa</div>
+          <div class="lc-title">CLOUD Act · soberanía digital</div>
+          <div class="lc-desc">El gobierno de EE.UU. puede obligar a empresas americanas a entregar datos con orden de silencio — incluso en Europa. Una empresa europea sin matriz americana no está sujeta. Para hospitales, bancos y gobiernos: esto es un requisito, no un detalle.</div>
+        </div>
+        <div class="legal-card lawyers">
+          <div class="lc-label yell">Para el cliente</div>
+          <div class="lc-title">Buffet de abogados incluido</div>
+          <div class="lc-desc">Si el vendor amenaza con litigio — lo hacen para asustar, no porque tengan razón — nuestro equipo responde. El cliente negocia con poder real, no con miedo.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div><!-- .deck -->
+
+<div class="nav">
+  <button onclick="go(-1)">← Prev</button>
+  <div class="dots" id="dots"></div>
+  <button onclick="go(1)">Next →</button>
+</div>
+
+<script>
+  const slides = document.querySelectorAll('.slide');
+  const dotsEl = document.getElementById('dots');
+  const snumEl = document.getElementById('snum');
+  let cur = 0;
+
+  slides.forEach((_,i) => {
+    const d = document.createElement('div');
+    d.className = 'dot' + (i===0?' active':'');
+    d.onclick = () => goTo(i);
+    dotsEl.appendChild(d);
+  });
+
+  function goTo(n) {
+    slides[cur].classList.remove('active');
+    dotsEl.children[cur].classList.remove('active');
+    cur = (n + slides.length) % slides.length;
+    slides[cur].classList.add('active');
+    dotsEl.children[cur].classList.add('active');
+    snumEl.textContent = String(cur+1).padStart(2,'0') + ' / ' + String(slides.length).padStart(2,'0');
+  }
+  function go(d) { goTo(cur+d); }
+  document.addEventListener('keydown', e => {
+    if (e.key==='ArrowRight'||e.key==='ArrowDown') go(1);
+    if (e.key==='ArrowLeft' ||e.key==='ArrowUp')   go(-1);
+  });
+</script>
+</body>
+</html>

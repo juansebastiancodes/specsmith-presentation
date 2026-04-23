@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SpecSmith — Pitch</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,700;1,300&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #09090f;
+    --surface: #111118;
+    --surface2: #1a1a26;
+    --accent: #00e5ff;
+    --accent2: #ff3d6b;
+    --accent3: #ffe066;
+    --text: #f0f0f8;
+    --muted: #6b6b88;
+    --border: rgba(255,255,255,0.07);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body {
+    width: 100%; height: 100%;
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    overflow: hidden;
+  }
+
+  /* ── SLIDESHOW ── */
+  .deck { width: 100%; height: 100%; position: relative; }
+
+  .slide {
+    position: absolute; inset: 0;
+    display: flex; flex-direction: column;
+    justify-content: center; align-items: center;
+    padding: 60px 80px;
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.5s ease;
+  }
+  .slide.active { opacity: 1; pointer-events: all; }
+
+  /* ── NAV ── */
+  .nav {
+    position: fixed; bottom: 36px; left: 50%; transform: translateX(-50%);
+    display: flex; align-items: center; gap: 20px; z-index: 100;
+  }
+  .nav button {
+    background: var(--surface2); border: 1px solid var(--border);
+    color: var(--text); font-family: 'DM Sans', sans-serif;
+    font-size: 13px; letter-spacing: 0.05em;
+    padding: 10px 28px; border-radius: 100px; cursor: pointer;
+    transition: all 0.2s;
+  }
+  .nav button:hover { background: var(--accent); color: var(--bg); border-color: var(--accent); }
+  .nav .dots { display: flex; gap: 8px; align-items: center; }
+  .nav .dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--muted); transition: all 0.3s; cursor: pointer;
+  }
+  .nav .dot.active { background: var(--accent); width: 20px; border-radius: 3px; }
+
+  /* ── SLIDE N° ── */
+  .slide-num {
+    position: fixed; top: 30px; right: 40px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; color: var(--muted);
+    letter-spacing: 0.1em;
+  }
+
+  /* ── LOGO corner ── */
+  .logo-corner {
+    position: fixed; top: 28px; left: 40px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px; letter-spacing: 0.15em;
+    color: var(--accent);
+  }
+
+  /* ── TYPOGRAPHY helpers ── */
+  .eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 18px;
+  }
+  h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(64px, 9vw, 120px);
+    letter-spacing: 0.04em; line-height: 0.95;
+  }
+  h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(40px, 6vw, 72px);
+    letter-spacing: 0.04em; line-height: 1;
+  }
+  .lead { font-size: 20px; font-weight: 300; color: rgba(240,240,248,0.75); line-height: 1.55; max-width: 680px; }
+  .mono { font-family: 'JetBrains Mono', monospace; }
+
+  /* ── GLOW decorations ── */
+  .glow-cyan { text-shadow: 0 0 40px rgba(0,229,255,0.5); color: var(--accent); }
+  .glow-red  { text-shadow: 0 0 40px rgba(255,61,107,0.5); color: var(--accent2); }
+  .glow-yell { text-shadow: 0 0 40px rgba(255,224,102,0.4); color: var(--accent3); }
+
+  /* ── BG ambient blobs ── */
+  .blob {
+    position: absolute; border-radius: 50%; filter: blur(120px);
+    pointer-events: none; z-index: 0;
+  }
+
+  /* ── SLIDE 1: COVER ── */
+  #s1 { text-align: center; }
+  #s1 .bigword {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(90px, 14vw, 180px);
+    letter-spacing: 0.08em; line-height: 1;
+    position: relative; z-index: 1;
+  }
+  #s1 .tagline {
+    font-size: 18px; font-weight: 300; letter-spacing: 0.05em;
+    color: rgba(240,240,248,0.6); margin-top: 16px; z-index: 1;
+    position: relative;
+  }
+  #s1 .badge {
+    margin-top: 48px; z-index: 1; position: relative;
+    display: inline-flex; align-items: center; gap: 10px;
+    background: rgba(0,229,255,0.08); border: 1px solid rgba(0,229,255,0.25);
+    padding: 10px 24px; border-radius: 100px;
+    font-family: 'JetBrains Mono', monospace; font-size: 12px;
+    letter-spacing: 0.1em; color: var(--accent);
+  }
+  #s1 .badge::before { content: '●'; animation: blink 1.4s infinite; }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.2} }
+
+  /* ── SLIDE 2: PROBLEM ── */
+  #s2 { align-items: flex-start; }
+  #s2 .stat-row {
+    display: grid; grid-template-columns: repeat(3,1fr); gap: 24px;
+    width: 100%; max-width: 960px; z-index: 1; margin-top: 36px;
+  }
+  .stat-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 16px; padding: 32px 28px;
+    display: flex; flex-direction: column; gap: 8px;
+    position: relative; overflow: hidden;
+  }
+  .stat-card::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0;
+    height: 2px; background: linear-gradient(90deg, var(--accent2), transparent);
+  }
+  .stat-card .big-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 52px; color: var(--accent2); line-height: 1;
+  }
+  .stat-card .desc { font-size: 14px; color: var(--muted); line-height: 1.4; }
+  #s2 .quote {
+    margin-top: 32px; z-index: 1;
+    font-size: 22px; font-weight: 300; font-style: italic;
+    color: rgba(240,240,248,0.55); max-width: 760px; line-height: 1.5;
+    border-left: 3px solid var(--accent2); padding-left: 24px;
+  }
+
+  /* ── SLIDE 3: SOLUTION ── */
+  #s3 { align-items: flex-start; }
+  .solution-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 20px;
+    width: 100%; max-width: 960px; z-index: 1; margin-top: 32px;
+  }
+  .sol-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 16px; padding: 28px 28px;
+    display: flex; gap: 20px; align-items: flex-start;
+    transition: border-color 0.3s;
+  }
+  .sol-card:hover { border-color: rgba(0,229,255,0.3); }
+  .sol-icon {
+    width: 44px; height: 44px; border-radius: 12px; flex-shrink: 0;
+    background: rgba(0,229,255,0.1); border: 1px solid rgba(0,229,255,0.2);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px;
+  }
+  .sol-title { font-size: 16px; font-weight: 600; margin-bottom: 6px; }
+  .sol-desc { font-size: 13px; color: var(--muted); line-height: 1.5; }
+
+  /* ── SLIDE 4: EZFA DEMO ── */
+  #s4 { align-items: flex-start; }
+  .demo-layout {
+    display: grid; grid-template-columns: 1fr 1.4fr; gap: 32px;
+    width: 100%; max-width: 1000px; z-index: 1; margin-top: 28px;
+    align-items: start;
+  }
+  .demo-left { display: flex; flex-direction: column; gap: 16px; }
+  .cart-visual {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 16px; padding: 28px;
+    display: flex; flex-direction: column; gap: 12px;
+  }
+  .cart-icon {
+    font-size: 48px; margin-bottom: 4px;
+  }
+  .cart-title { font-family: 'Bebas Neue', sans-serif; font-size: 28px; color: var(--accent); }
+  .cart-desc { font-size: 13px; color: var(--muted); line-height: 1.5; }
+  .cart-meta {
+    display: flex; flex-direction: column; gap: 6px; margin-top: 8px;
+  }
+  .meta-row {
+    display: flex; gap: 8px; align-items: center;
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+  }
+  .meta-key { color: var(--muted); }
+  .meta-val { color: var(--accent3); }
+
+  .spec-panel {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 16px; padding: 24px; overflow: hidden;
+  }
+  .spec-panel .panel-header {
+    display: flex; align-items: center; gap: 10px; margin-bottom: 16px;
+    padding-bottom: 12px; border-bottom: 1px solid var(--border);
+  }
+  .panel-dots { display: flex; gap: 6px; }
+  .panel-dot { width: 10px; height: 10px; border-radius: 50%; }
+  .pd-r { background: #ff5f57; }
+  .pd-y { background: #febc2e; }
+  .pd-g { background: #28c840; }
+  .panel-title { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--muted); margin-left: 4px; }
+
+  .spec-content { font-family: 'JetBrains Mono', monospace; font-size: 11.5px; line-height: 1.7; }
+  .sc-comment { color: #4a9; }
+  .sc-key { color: var(--accent); }
+  .sc-val { color: var(--accent3); }
+  .sc-warn { color: var(--accent2); }
+  .sc-ok { color: #4a9; }
+  .sc-section { color: rgba(240,240,248,0.9); font-weight: 700; }
+
+  /* ── SLIDE 5: ARCHITECTURE ── */
+  #s5 { align-items: flex-start; }
+  .arch-wrap { width: 100%; max-width: 960px; z-index: 1; margin-top: 24px; }
+  .arch-svg-container {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 20px; padding: 32px; overflow: hidden;
+  }
+
+  /* ── SLIDE 6: LEGAL SHIELD ── */
+  #s6 { align-items: flex-start; }
+  .legal-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 20px;
+    width: 100%; max-width: 960px; z-index: 1; margin-top: 32px;
+  }
+  .legal-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 16px; padding: 28px;
+  }
+  .legal-card.highlight { border-color: rgba(0,229,255,0.35); background: rgba(0,229,255,0.04); }
+  .legal-label {
+    font-family: 'JetBrains Mono', monospace; font-size: 10px;
+    letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 12px;
+  }
+  .legal-title { font-size: 18px; font-weight: 600; margin-bottom: 10px; }
+  .legal-desc { font-size: 13px; color: var(--muted); line-height: 1.6; }
+  .legal-list { list-style: none; display: flex; flex-direction: column; gap: 8px; margin-top: 12px; }
+  .legal-list li { font-size: 13px; color: var(--muted); display: flex; gap: 10px; }
+  .legal-list li::before { content: '✓'; color: var(--accent); flex-shrink: 0; }
+
+  /* ── SLIDE 7: CTA ── */
+  #s7 { text-align: center; }
+  #s7 .cta-sub { font-size: 20px; font-weight: 300; color: rgba(240,240,248,0.6); margin-top: 24px; max-width: 600px; line-height: 1.5; }
+  .cta-pills { display: flex; gap: 16px; margin-top: 48px; z-index: 1; flex-wrap: wrap; justify-content: center; }
+  .pill {
+    padding: 14px 32px; border-radius: 100px; font-size: 15px; font-weight: 500;
+    cursor: pointer; transition: all 0.2s;
+  }
+  .pill-primary { background: var(--accent); color: var(--bg); }
+  .pill-secondary { background: transparent; border: 1px solid var(--border); color: var(--text); }
+  .big-tagline {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(48px, 7vw, 88px);
+    letter-spacing: 0.04em; line-height: 1.05;
+    max-width: 800px; z-index: 1;
+  }
+
+  /* ── SLIDE EUROPA ── */
+  #s_europa { align-items: flex-start; }
+  .europa-grid {
+    display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px;
+    width: 100%; max-width: 960px; z-index: 1; margin-top: 28px;
+  }
+  .eu-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 14px; padding: 22px 20px;
+    display: flex; flex-direction: column; gap: 8px;
+    position: relative; overflow: hidden;
+  }
+  .eu-card.featured { border-color: rgba(0,229,255,0.3); background: rgba(0,229,255,0.04); }
+  .eu-card::before {
+    content:''; position:absolute; top:0; left:0; right:0; height:2px;
+    background: linear-gradient(90deg, var(--accent), transparent);
+  }
+  .eu-card.red::before { background: linear-gradient(90deg, var(--accent2), transparent); }
+  .eu-card.yell::before { background: linear-gradient(90deg, var(--accent3), transparent); }
+  .eu-flag { font-size: 26px; margin-bottom: 4px; }
+  .eu-title { font-size: 14px; font-weight: 700; line-height: 1.2; }
+  .eu-desc { font-size: 12px; color: var(--muted); line-height: 1.5; }
+  .eu-cite {
+    font-family: 'JetBrains Mono', monospace; font-size: 10px;
+    color: rgba(0,229,255,0.5); margin-top: 4px;
+  }
+  .europa-bottom {
+    width:100%; max-width:960px; z-index:1; margin-top:16px;
+    background: rgba(255,61,107,0.06); border: 1px solid rgba(255,61,107,0.2);
+    border-radius:12px; padding:16px 24px;
+    display:flex; align-items:center; gap:16px;
+  }
+  .europa-bottom .eb-icon { font-size:24px; flex-shrink:0; }
+  .europa-bottom p { font-size:13px; color:rgba(240,240,248,0.65); line-height:1.5; }
+  .europa-bottom strong { color:var(--accent2); }
+
+  /* ── SLIDE EZFA POC ── */
+  #s_poc { align-items: flex-start; }
+  .poc-layout {
+    display: grid; grid-template-columns: 1fr 1.5fr; gap: 28px;
+    width: 100%; max-width: 1000px; z-index: 1; margin-top: 20px;
+    align-items: start;
+  }
+  .poc-left { display: flex; flex-direction: column; gap: 14px; }
+  .poc-context {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 14px; padding: 22px;
+  }
+  .poc-context .ctx-title { font-size: 15px; font-weight: 700; margin-bottom: 6px; }
+  .poc-context .ctx-desc { font-size: 12.5px; color: var(--muted); line-height: 1.55; }
+  .poc-meta { display:flex; flex-direction:column; gap:5px; margin-top:10px; }
+  .poc-meta .mr { font-family:'JetBrains Mono',monospace; font-size:10.5px; display:flex; gap:8px; }
+  .poc-meta .mk { color:var(--muted); }
+  .poc-meta .mv { color:var(--accent3); }
+  .poc-timer {
+    background: var(--surface); border: 1px solid rgba(0,229,255,0.2);
+    border-radius:12px; padding:16px 20px; text-align:center;
+  }
+  .poc-timer .pt-num {
+    font-family:'Bebas Neue',sans-serif; font-size:36px;
+    color:var(--accent); line-height:1;
+  }
+  .poc-timer .pt-label { font-size:11px; color:var(--muted); margin-top:2px; }
+</style>
+</head>
+<body>
+
+<div class="logo-corner">SpecSmith</div>
+<div class="slide-num" id="slideNum">01 / 08</div>
+
+<div class="deck">
+
+  <!-- ═══ SLIDE 1: COVER ═══ -->
+  <div class="slide active" id="s1">
+    <div class="blob" style="width:600px;height:600px;background:rgba(0,229,255,0.07);top:-100px;left:-100px;"></div>
+    <div class="blob" style="width:400px;height:400px;background:rgba(255,61,107,0.06);bottom:-50px;right:-50px;"></div>
+    <div class="eyebrow" style="position:relative;z-index:1;">Reverse Engineering Intelligence</div>
+    <div class="bigword" style="position:relative;z-index:1;">
+      <span class="glow-cyan">SPEC</span><span style="color:rgba(240,240,248,0.15)">SMITH</span>
+    </div>
+    <div class="tagline">Abrimos la caja negra del software propietario.</div>
+    <div class="badge" style="display:inline-flex;">
+      LIVE DEMO — EZ Flash Advance Client · EZFA_Client.exe · 2003
+    </div>
+  </div>
+
+  <!-- ═══ SLIDE 2: PROBLEMA ═══ -->
+  <div class="slide" id="s2">
+    <div class="blob" style="width:500px;height:500px;background:rgba(255,61,107,0.07);top:-80px;right:-80px;"></div>
+    <div style="position:relative;z-index:1;width:100%;max-width:960px;">
+      <div class="eyebrow">El Problema</div>
+      <h2>Rehenes del<br><span class="glow-red">vendor lock-in</span></h2>
+    </div>
+    <div class="stat-row">
+      <div class="stat-card">
+        <div class="big-num">$500B</div>
+        <div class="desc">Mercado global de software legacy. Atrapado. Sin salida visible.</div>
+      </div>
+      <div class="stat-card">
+        <div class="big-num">3–5×</div>
+        <div class="desc">Lo que los vendors cobran de más cuando saben que migrar "es imposible".</div>
+      </div>
+      <div class="stat-card">
+        <div class="big-num">0</div>
+        <div class="desc">Herramientas que generan specs técnicas legalmente desde un binario. Hasta hoy.</div>
+      </div>
+    </div>
+    <div class="quote" style="position:relative;z-index:1;">
+      "Migrar costaría $5M y 2 años." — Lo que el vendor <em>quiere</em> que creas.
+    </div>
+  </div>
+
+  <!-- ═══ SLIDE 3: SOLUCIÓN ═══ -->
+  <div class="slide" id="s3">
+    <div class="blob" style="width:500px;height:500px;background:rgba(0,229,255,0.06);bottom:-100px;left:-100px;"></div>
+    <div style="position:relative;z-index:1;width:100%;max-width:960px;">
+      <div class="eyebrow">La Solución</div>
+      <h2>Inteligencia técnica<br><span class="glow-cyan">para recuperar tu libertad</span></h2>
+    </div>
+    <div class="solution-grid">
+      <div class="sol-card">
+        <div class="sol-icon">🔍</div>
+        <div>
+          <div class="sol-title">Spec completa desde el binario</div>
+          <div class="sol-desc">Subís un .exe, .bin o .dll. En minutos obtenés la especificación técnica detallada de qué hace exactamente ese software. Sin código fuente.</div>
+        </div>
+      </div>
+      <div class="sol-card">
+        <div class="sol-icon">🧪</div>
+        <div>
+          <div class="sol-title">Test suite automático</div>
+          <div class="sol-desc">Generamos la suite de tests que valida que cualquier reimplementación es funcionalmente idéntica al original. El contrato de comportamiento, en código.</div>
+        </div>
+      </div>
+      <div class="sol-card">
+        <div class="sol-icon">⚖️</div>
+        <div>
+          <div class="sol-title">Proceso clean-room certificado</div>
+          <div class="sol-desc">Separamos la fase de análisis de la de reimplementación. Método probado en corte (BIOS compatible, Wine, Samba). Legal en EU, USA y jurisdicciones principales.</div>
+        </div>
+      </div>
+      <div class="sol-card">
+        <div class="sol-icon">🛡️</div>
+        <div>
+          <div class="sol-title">Buffet de abogados incluido</div>
+          <div class="sol-desc">Cobertura legal en cada engagement. Si el vendor amenaza con litigio —lo hacen para asustar, no porque tengan razón— nosotros respondemos.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ SLIDE 4: ARQUITECTURA ═══ -->
+  <div class="slide" id="s5">
+    <div style="position:relative;z-index:1;width:100%;max-width:960px;">
+      <div class="eyebrow">Cómo funciona</div>
+      <h2>Arquitectura <span class="glow-cyan">SpecSmith</span></h2>
+    </div>
+    <div class="arch-wrap">
+      <div class="arch-svg-container">
+        <svg viewBox="0 0 880 340" xmlns="http://www.w3.org/2000/svg" width="100%">
+          <defs>
+            <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+              <path d="M0,0 L0,6 L8,3 z" fill="rgba(0,229,255,0.6)"/>
+            </marker>
+            <marker id="arr2" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+              <path d="M0,0 L0,6 L8,3 z" fill="rgba(255,224,102,0.6)"/>
+            </marker>
+          </defs>
+
+          <!-- BROWSER -->
+          <rect x="20" y="120" width="120" height="100" rx="12" fill="#1a1a26" stroke="rgba(0,229,255,0.3)" stroke-width="1.5"/>
+          <text x="80" y="152" text-anchor="middle" font-family="JetBrains Mono" font-size="22" fill="rgba(240,240,248,0.7)">🖥️</text>
+          <text x="80" y="175" text-anchor="middle" font-family="DM Sans" font-size="11" fill="rgba(240,240,248,0.7)" font-weight="600">Browser</text>
+          <text x="80" y="192" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#6b6b88">Upload .exe</text>
+          <text x="80" y="205" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#6b6b88">SSE events</text>
+
+          <!-- ARROW 1 -->
+          <line x1="142" y1="170" x2="188" y2="170" stroke="rgba(0,229,255,0.5)" stroke-width="1.5" marker-end="url(#arr)"/>
+          <text x="165" y="162" text-anchor="middle" font-family="JetBrains Mono" font-size="8.5" fill="#6b6b88">POST binary</text>
+
+          <!-- NEXT.JS API -->
+          <rect x="190" y="120" width="120" height="100" rx="12" fill="#1a1a26" stroke="rgba(0,229,255,0.3)" stroke-width="1.5"/>
+          <text x="250" y="152" text-anchor="middle" font-family="JetBrains Mono" font-size="22" fill="rgba(240,240,248,0.7)">⚡</text>
+          <text x="250" y="175" text-anchor="middle" font-family="DM Sans" font-size="11" fill="rgba(240,240,248,0.7)" font-weight="600">Next.js API</text>
+          <text x="250" y="192" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#6b6b88">Jobs / Events</text>
+          <text x="250" y="205" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#6b6b88">SSE stream</text>
+
+          <!-- ARROW to MinIO -->
+          <line x1="310" y1="145" x2="356" y2="90" stroke="rgba(0,229,255,0.4)" stroke-width="1.2" marker-end="url(#arr)" stroke-dasharray="4,3"/>
+          <text x="348" y="108" font-family="JetBrains Mono" font-size="8" fill="#6b6b88">blob</text>
+
+          <!-- MINIO -->
+          <rect x="358" y="40" width="110" height="66" rx="10" fill="#1a1a26" stroke="rgba(255,224,102,0.3)" stroke-width="1.2"/>
+          <text x="413" y="65" text-anchor="middle" font-family="JetBrains Mono" font-size="18" fill="rgba(240,240,248,0.6)">🪣</text>
+          <text x="413" y="84" text-anchor="middle" font-family="DM Sans" font-size="11" fill="rgba(240,240,248,0.65)" font-weight="600">MinIO</text>
+          <text x="413" y="98" text-anchor="middle" font-family="JetBrains Mono" font-size="8.5" fill="#6b6b88">Object Storage</text>
+
+          <!-- ARROW API to Postgres -->
+          <line x1="310" y1="185" x2="356" y2="185" stroke="rgba(0,229,255,0.5)" stroke-width="1.5" marker-end="url(#arr)"/>
+          <text x="333" y="178" text-anchor="middle" font-family="JetBrains Mono" font-size="8.5" fill="#6b6b88">INSERT</text>
+
+          <!-- POSTGRES -->
+          <rect x="358" y="140" width="110" height="90" rx="12" fill="#1a1a26" stroke="rgba(0,229,255,0.35)" stroke-width="1.5"/>
+          <text x="413" y="170" text-anchor="middle" font-family="JetBrains Mono" font-size="22" fill="rgba(240,240,248,0.7)">🐘</text>
+          <text x="413" y="192" text-anchor="middle" font-family="DM Sans" font-size="11" fill="rgba(240,240,248,0.7)" font-weight="600">Postgres 16</text>
+          <text x="413" y="208" text-anchor="middle" font-family="JetBrains Mono" font-size="8.5" fill="#6b6b88">LISTEN/NOTIFY</text>
+          <text x="413" y="221" text-anchor="middle" font-family="JetBrains Mono" font-size="8.5" fill="#6b6b88">pg-boss queue</text>
+
+          <!-- ARROW Postgres to Worker -->
+          <line x1="470" y1="185" x2="516" y2="185" stroke="rgba(0,229,255,0.5)" stroke-width="1.5" marker-end="url(#arr)"/>
+          <text x="493" y="178" text-anchor="middle" font-family="JetBrains Mono" font-size="8.5" fill="#6b6b88">queue</text>
+
+          <!-- WORKER -->
+          <rect x="518" y="140" width="110" height="90" rx="12" fill="#1a1a26" stroke="rgba(0,229,255,0.35)" stroke-width="1.5"/>
+          <text x="573" y="170" text-anchor="middle" font-family="JetBrains Mono" font-size="22" fill="rgba(240,240,248,0.7)">⚙️</text>
+          <text x="573" y="192" text-anchor="middle" font-family="DM Sans" font-size="11" fill="rgba(240,240,248,0.7)" font-weight="600">Worker</text>
+          <text x="573" y="208" text-anchor="middle" font-family="JetBrains Mono" font-size="8.5" fill="#6b6b88">pg-boss consumer</text>
+          <text x="573" y="221" text-anchor="middle" font-family="JetBrains Mono" font-size="8.5" fill="#6b6b88">Analyst pipeline</text>
+
+          <!-- ARROW Worker to Sandbox -->
+          <line x1="630" y1="185" x2="676" y2="185" stroke="rgba(255,61,107,0.6)" stroke-width="1.5" marker-end="url(#arr2)"/>
+          <text x="653" y="178" text-anchor="middle" font-family="JetBrains Mono" font-size="8.5" fill="#6b6b88">boot MA</text>
+
+          <!-- SANDBOX -->
+          <rect x="678" y="100" width="180" height="170" rx="14" fill="#1a1a26" stroke="rgba(255,61,107,0.35)" stroke-width="1.5"/>
+          <rect x="678" y="100" width="180" height="28" rx="14" fill="rgba(255,61,107,0.12)"/>
+          <rect x="678" y="114" width="180" height="14" fill="rgba(255,61,107,0.08)"/>
+          <text x="768" y="119" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="rgba(255,61,107,0.9)" font-weight="700">MANAGED AGENTS SANDBOX</text>
+          <text x="768" y="156" text-anchor="middle" font-family="JetBrains Mono" font-size="20" fill="rgba(240,240,248,0.7)">🤖</text>
+          <text x="768" y="178" text-anchor="middle" font-family="DM Sans" font-size="11" fill="rgba(240,240,248,0.7)" font-weight="600">Claude + Ghidra 12</text>
+          <text x="768" y="196" text-anchor="middle" font-family="JetBrains Mono" font-size="8.5" fill="#6b6b88">ghidra-mcp inside</text>
+          <text x="768" y="210" text-anchor="middle" font-family="JetBrains Mono" font-size="8.5" fill="#4a9">→ spec.md</text>
+          <text x="768" y="224" text-anchor="middle" font-family="JetBrains Mono" font-size="8.5" fill="#4a9">→ spec.json</text>
+          <text x="768" y="238" text-anchor="middle" font-family="JetBrains Mono" font-size="8.5" fill="rgba(255,61,107,0.7)">→ evidence.zip</text>
+          <text x="768" y="256" text-anchor="middle" font-family="JetBrains Mono" font-size="8.5" fill="#6b6b88">clean-room enforced</text>
+
+          <!-- ARROW back SSE -->
+          <path d="M250,222 Q250,300 413,300 Q573,300 573,232" stroke="rgba(0,229,255,0.3)" stroke-width="1.2" fill="none" marker-end="url(#arr)" stroke-dasharray="5,3"/>
+          <text x="413" y="315" text-anchor="middle" font-family="JetBrains Mono" font-size="8.5" fill="#6b6b88">SSE events → browser en tiempo real</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ SLIDE 6: LEGAL ═══ -->
+  <div class="slide" id="s6">
+    <div class="blob" style="width:400px;height:400px;background:rgba(0,229,255,0.05);bottom:-50px;right:-50px;"></div>
+    <div style="position:relative;z-index:1;width:100%;max-width:960px;">
+      <div class="eyebrow">Legal & Confianza</div>
+      <h2>Diseñado para<br><span class="glow-cyan">resistir cualquier ataque</span></h2>
+    </div>
+    <div class="legal-grid">
+      <div class="legal-card highlight">
+        <div class="legal-label">Clean Room Method</div>
+        <div class="legal-title">Probado en corte durante 30 años</div>
+        <div class="legal-desc">El mismo método usado para crear el BIOS compatible IBM, Wine, Samba y ReactOS. Equipo A analiza el binario → genera spec. Equipo B reimplementa desde la spec. Nunca se cruzan.</div>
+      </div>
+      <div class="legal-card">
+        <div class="legal-label">Marco Legal</div>
+        <div class="legal-title">Protegido por ley en EU y USA</div>
+        <ul class="legal-list">
+          <li>EU Directiva 2009/24/EC Art.6 — RE para interoperabilidad es legal</li>
+          <li>USA — Sega v. Accolade (1992), Sony v. Connectix (2000)</li>
+          <li>Operamos en Estonia / Irlanda — dentro del paraguas EU</li>
+          <li>Nosotros generamos specs, no reimplementaciones</li>
+        </ul>
+      </div>
+      <div class="legal-card">
+        <div class="legal-label">Clean Room en el Producto</div>
+        <div class="legal-title">Separación técnica enforced</div>
+        <div class="legal-desc">La arquitectura separa físicamente el análisis (dirty room) del output entregado (clean room). <span style="color:var(--accent)">spec.md no contiene una sola línea de assembly ni C descompilado</span>. Verificado automáticamente en cada job.</div>
+      </div>
+      <div class="legal-card highlight">
+        <div class="legal-label">Para el cliente</div>
+        <div class="legal-title">Buffet de abogados incluido</div>
+        <div class="legal-desc">Cada engagement incluye cobertura legal. Si el vendor amenaza con litigio — lo hacen para asustar — nuestro equipo responde. El cliente negocia con poder real, no con miedo.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ SLIDE 7: EZFA — PROOF OF CONCEPT ═══ -->
+  <div class="slide" id="s_poc">
+    <div class="blob" style="width:400px;height:400px;background:rgba(255,224,102,0.05);top:-50px;right:0;"></div>
+    <div style="position:relative;z-index:1;width:100%;max-width:1000px;">
+      <div class="eyebrow">Proof of concept — lo que corrimos en esta hackathon</div>
+      <h2>De binario huérfano<br><span class="glow-yell">a spec en 2 minutos</span></h2>
+    </div>
+    <div class="poc-layout">
+      <div class="poc-left">
+        <div class="poc-context">
+          <div class="ctx-title">🎮 EZ Flash Advance · EZFA_Client.exe</div>
+          <div class="ctx-desc">Cartucho flash para Game Boy Advance (2003). Se conecta a la PC vía USB para quemar ROMs directamente en el cartucho. El software cliente fue abandonado — solo corre en Windows XP, sin soporte desde hace más de 15 años. Nadie tiene el código fuente. Elegimos este binario precisamente por eso: un caso real de software atrapado en el tiempo.</div>
+          <div class="poc-meta">
+            <div class="mr"><span class="mk">Archivo:</span><span class="mv">EZFA_Client.exe</span></div>
+            <div class="mr"><span class="mk">Formato:</span><span class="mv">Win32 PE x86 · circa 2003</span></div>
+            <div class="mr"><span class="mk">Versión:</span><span class="mv">1.03E — última conocida</span></div>
+            <div class="mr"><span class="mk">Soporte:</span><span class="mv" style="color:var(--accent2);">Abandonado · WinXP only</span></div>
+          </div>
+        </div>
+        <div class="poc-timer">
+          <div class="pt-num">~2 min</div>
+          <div class="pt-label">de binario a spec.md completa · sin código fuente</div>
+        </div>
+      </div>
+      <div class="spec-panel">
+        <div class="panel-header">
+          <div class="panel-dots">
+            <div class="panel-dot pd-r"></div>
+            <div class="panel-dot pd-y"></div>
+            <div class="panel-dot pd-g"></div>
+          </div>
+          <div class="panel-title">spec.md — output real de SpecSmith</div>
+        </div>
+        <div class="spec-content">
+<span class="sc-comment"># EZFA_Client.exe — Especificación Clean-Room</span><br>
+<span class="sc-comment">## Win32 PE x86 · ~180KB · sin código fuente</span><br>
+<br>
+<span class="sc-section">## Funciones identificadas</span><br>
+<span class="sc-ok">✓</span> <span class="sc-key">usb_connect()</span>       <span class="sc-comment">→ WinUsb / CreateFile</span><br>
+<span class="sc-ok">✓</span> <span class="sc-key">flash_rom(buf, len)</span>  <span class="sc-comment">→ WriteFile en chunks 64B</span><br>
+<span class="sc-ok">✓</span> <span class="sc-key">verify_checksum()</span>   <span class="sc-comment">→ CRC32 custom inline</span><br>
+<span class="sc-ok">✓</span> <span class="sc-key">patch_rtc()</span>          <span class="sc-comment">→ escribe RTC al cartucho</span><br>
+<span class="sc-ok">✓</span> <span class="sc-key">multirom_build()</span>    <span class="sc-comment">→ genera selector de ROMs</span><br>
+<br>
+<span class="sc-section">## APIs Win32 utilizadas</span><br>
+<span class="sc-ok">→</span> <span class="sc-key">CreateFile / DeviceIoControl</span>  <span class="sc-comment">kernel32 · vigente</span><br>
+<span class="sc-warn">⚠</span> <span class="sc-key">usbscan.sys</span>   <span class="sc-comment">driver sin firmar · no corre en Win10/11</span><br>
+<span class="sc-warn">⚠</span> <span class="sc-key">XceedZip.dll</span>  <span class="sc-comment">3rd-party · no redistribuible</span><br>
+<br>
+<span class="sc-section">## Mapa de incompatibilidades</span><br>
+<span class="sc-warn">🔴</span> Driver sin firma → bloqueado por Secure Boot<br>
+<span class="sc-warn">🟡</span> UI Win32 dialogs clásicos → reemplazable<br>
+<span class="sc-ok">🟢</span> Lógica de flash: puro C portable sin dependencias<br>
+<br>
+<span class="sc-section">## Estimación de reimplementación</span><br>
+<span class="sc-val">Senior dev + esta spec → ~3 días</span><br>
+<span class="sc-comment"># Sin la spec → semanas, con arqueología incluida</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ SLIDE 8: CTA ═══ -->
+  <div class="slide" id="s8">
+    <div class="blob" style="width:700px;height:700px;background:rgba(0,229,255,0.06);top:50%;left:50%;transform:translate(-50%,-50%);"></div>
+    <div class="eyebrow" style="position:relative;z-index:1;">SpecSmith</div>
+    <div class="big-tagline" style="position:relative;z-index:1;">
+      Negocia desde la<br><span class="glow-cyan">verdad técnica.</span><br>No desde el miedo.
+    </div>
+    <p class="cta-sub" style="position:relative;z-index:1;">
+      Subí un binario. En minutos sabés exactamente qué hace,<br>qué cuesta reimplementarlo, y cómo salir del lock-in.
+    </p>
+    <div class="cta-pills" style="position:relative;z-index:1;">
+      <div class="pill pill-primary">Ver demo en vivo →</div>
+      <div class="pill pill-secondary">specsmith.io</div>
+    </div>
+  </div>
+
+</div><!-- .deck -->
+
+<!-- ── NAVIGATION ── -->
+<div class="nav">
+  <button onclick="go(-1)">← Prev</button>
+  <div class="dots" id="dotRow"></div>
+  <button onclick="go(1)">Next →</button>
+</div>
+
+<script>
+  const slides = document.querySelectorAll('.slide');
+  const dotRow = document.getElementById('dotRow');
+  const slideNum = document.getElementById('slideNum');
+  let cur = 0;
+
+  // Init slide count
+  slideNum.textContent = '01 / ' + String(slides.length).padStart(2,'0');
+
+  // Build dots
+  slides.forEach((_, i) => {
+    const d = document.createElement('div');
+    d.className = 'dot' + (i === 0 ? ' active' : '');
+    d.onclick = () => goTo(i);
+    dotRow.appendChild(d);
+  });
+
+  function goTo(n) {
+    slides[cur].classList.remove('active');
+    dotRow.children[cur].classList.remove('active');
+    cur = (n + slides.length) % slides.length;
+    slides[cur].classList.add('active');
+    dotRow.children[cur].classList.add('active');
+    slideNum.textContent = String(cur+1).padStart(2,'0') + ' / ' + String(slides.length).padStart(2,'0');
+  }
+
+  function go(dir) { goTo(cur + dir); }
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') go(1);
+    if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp')   go(-1);
+  });
+</script>
+</body>
+</html>
