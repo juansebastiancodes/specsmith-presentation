@@ -48,8 +48,9 @@
   .glow-cyan { color:var(--accent);  text-shadow:0 0 40px rgba(0,229,255,0.5); }
 
   /* ── SLIDE 1 ── */
-  #s1 { align-items:flex-start; }
-  .s1-body { display:grid; grid-template-columns:1fr 1fr; gap:28px; width:100%; max-width:980px; z-index:1; margin-top:28px; align-items:start; }
+  #s1 { align-items:center; }
+  .s1-head { position:relative; z-index:1; width:min(1240px,100%); margin:0 auto; text-align:left; }
+  .s1-body { display:grid; grid-template-columns:1.05fr 0.95fr; gap:28px; width:min(1240px,100%); z-index:1; margin:28px auto 0; align-items:start; }
   .stats-col { display:flex; flex-direction:column; gap:16px; }
   .stat-card { background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:26px 24px; position:relative; overflow:hidden; }
   .stat-card::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; background:linear-gradient(90deg,var(--accent2),transparent); }
@@ -62,7 +63,7 @@
   .problem-detail p strong { color:var(--text); }
 
   /* ── SLIDE 2 ── */
-  #s2 { align-items:flex-start; }
+  #s2 { align-items:center; }
   .s2-body { display:grid; grid-template-columns:1.1fr 0.9fr; gap:28px; width:100%; max-width:980px; z-index:1; margin-top:28px; align-items:start; }
   .flow-box { background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:28px 30px; }
   .flow-title { font-size:13px; font-weight:600; color:var(--muted); letter-spacing:0.05em; margin-bottom:20px; text-transform:uppercase; font-family:'JetBrains Mono',monospace; }
@@ -105,7 +106,7 @@
   ══════════════════════════════════ -->
   <div class="slide active" id="s1">
     <div class="blob" style="width:500px;height:500px;background:rgba(255,61,107,0.07);top:-80px;right:-80px;"></div>
-    <div style="position:relative;z-index:1;width:100%;max-width:980px;">
+    <div class="s1-head">
       <div class="eyebrow">El Problema</div>
       <h2>Rehenes del<br><span class="glow-red">vendor lock-in</span></h2>
     </div>

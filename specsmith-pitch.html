@@ -131,11 +131,12 @@
   #s1 .badge::before { content: '●'; animation: blink 1.4s infinite; }
   @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.2} }
 
+  /* ── CONTENT ALIGNMENT PATTERN (SLIDES 2–6) ── */
+  #s2, #s3, #s4, #s5, #s6 { align-items: center; }
   /* ── SLIDE 2: PROBLEM ── */
-  #s2 { align-items: flex-start; }
   #s2 .stat-row {
     display: grid; grid-template-columns: repeat(3,1fr); gap: 24px;
-    width: 100%; max-width: 960px; z-index: 1; margin-top: 36px;
+    width: min(1240px, 100%); z-index: 1; margin: 36px auto 0;
   }
   .stat-card {
     background: var(--surface); border: 1px solid var(--border);
@@ -153,14 +154,13 @@
   }
   .stat-card .desc { font-size: 14px; color: var(--muted); line-height: 1.4; }
   #s2 .quote {
-    margin-top: 32px; z-index: 1;
+    margin: 32px auto 0; z-index: 1;
     font-size: 22px; font-weight: 300; font-style: italic;
-    color: rgba(240,240,248,0.55); max-width: 760px; line-height: 1.5;
+    color: rgba(240,240,248,0.55); width: min(1240px, 100%); line-height: 1.5;
     border-left: 3px solid var(--accent2); padding-left: 24px;
   }
 
   /* ── SLIDE 3: SOLUTION ── */
-  #s3 { align-items: flex-start; }
   .solution-grid {
     display: grid; grid-template-columns: 1fr 1fr; gap: 20px;
     width: 100%; max-width: 960px; z-index: 1; margin-top: 32px;
@@ -182,7 +182,6 @@
   .sol-desc { font-size: 13px; color: var(--muted); line-height: 1.5; }
 
   /* ── SLIDE 4: EZFA DEMO ── */
-  #s4 { align-items: flex-start; }
   .demo-layout {
     display: grid; grid-template-columns: 1fr 1.4fr; gap: 32px;
     width: 100%; max-width: 1000px; z-index: 1; margin-top: 28px;
@@ -233,7 +232,6 @@
   .sc-section { color: rgba(240,240,248,0.9); font-weight: 700; }
 
   /* ── SLIDE 5: ARCHITECTURE ── */
-  #s5 { align-items: flex-start; }
   .arch-wrap { width: 100%; max-width: 960px; z-index: 1; margin-top: 24px; }
   .arch-svg-container {
     background: var(--surface); border: 1px solid var(--border);
@@ -241,7 +239,6 @@
   }
 
   /* ── SLIDE 6: LEGAL SHIELD ── */
-  #s6 { align-items: flex-start; }
   .legal-grid {
     display: grid; grid-template-columns: 1fr 1fr; gap: 20px;
     width: 100%; max-width: 960px; z-index: 1; margin-top: 32px;
@@ -368,7 +365,7 @@
   <!-- ═══ SLIDE 2: PROBLEMA ═══ -->
   <div class="slide" id="s2">
     <div class="blob" style="width:500px;height:500px;background:rgba(255,61,107,0.07);top:-80px;right:-80px;"></div>
-    <div style="position:relative;z-index:1;width:100%;max-width:960px;">
+    <div style="position:relative;z-index:1;width:min(1240px,100%);margin:0 auto;">
       <div class="eyebrow">El Problema</div>
       <h2>Rehenes del<br><span class="glow-red">vendor lock-in</span></h2>
     </div>
@@ -448,7 +445,7 @@
   <!-- ═══ SLIDE 4: POR QUÉ AHORA ═══ -->
   <div class="slide" id="s4">
     <div class="blob" style="width:600px;height:600px;background:rgba(0,229,255,0.06);top:50%;left:50%;transform:translate(-50%,-50%);"></div>
-    <div style="position:relative;z-index:1;width:100%;max-width:860px;display:flex;flex-direction:column;gap:32px;">
+    <div style="position:relative;z-index:1;width:min(1240px,100%);margin:0 auto;display:flex;flex-direction:column;gap:32px;">
       <div>
         <div class="eyebrow">Por qué ahora</div>
         <h2>Esto siempre fue posible.<br><span class="glow-cyan">La IA lo hace accesible.</span></h2>
