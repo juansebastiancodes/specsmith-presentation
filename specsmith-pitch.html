@@ -134,9 +134,10 @@
   /* ── CONTENT ALIGNMENT PATTERN (SLIDES 2–6) ── */
   #s2, #s3, #s4, #s5, #s6 { align-items: center; }
   /* ── SLIDE 2: PROBLEM ── */
+  #s2 { align-items: center; }
   #s2 .stat-row {
     display: grid; grid-template-columns: repeat(3,1fr); gap: 24px;
-    width: min(1240px, 100%); z-index: 1; margin: 36px auto 0;
+    width: 100%; max-width: 1240px; z-index: 1; margin-top: 36px;
   }
   .stat-card {
     background: var(--surface); border: 1px solid var(--border);
@@ -156,7 +157,7 @@
   #s2 .quote {
     margin: 32px auto 0; z-index: 1;
     font-size: 22px; font-weight: 300; font-style: italic;
-    color: rgba(240,240,248,0.55); width: min(1240px, 100%); line-height: 1.5;
+    color: rgba(240,240,248,0.55); width: 100%; max-width: 1240px; line-height: 1.5;
     border-left: 3px solid var(--accent2); padding-left: 24px;
   }
 
@@ -365,7 +366,7 @@
   <!-- ═══ SLIDE 2: PROBLEMA ═══ -->
   <div class="slide" id="s2">
     <div class="blob" style="width:500px;height:500px;background:rgba(255,61,107,0.07);top:-80px;right:-80px;"></div>
-    <div style="position:relative;z-index:1;width:min(1240px,100%);margin:0 auto;">
+    <div style="position:relative;z-index:1;width:100%;max-width:1240px;">
       <div class="eyebrow">El Problema</div>
       <h2>Rehenes del<br><span class="glow-red">vendor lock-in</span></h2>
     </div>
